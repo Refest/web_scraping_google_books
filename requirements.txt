@@ -1,0 +1,11 @@
+requests
+pandas
+beautifulsoup4
+nltk
+Sastrawi
+demoji
+matplotlib
+wordcloud
+ipython
+ipykernel
+jupyterlab
