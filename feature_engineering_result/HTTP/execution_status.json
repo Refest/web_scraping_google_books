@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "source": "HTTP",
+  "input_mode": "csv_snapshot",
+  "documents": 1,
+  "timestamp_utc": "2026-10-11T13:44:24.050333+00:00",
+  "earlier_scraping_and_preprocessing_rerun": false,
+  "package_versions": {
+    "requests": "2.32.3",
+    "pandas": "2.2.3",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "matplotlib": "3.10.3",
+    "gensim": "4.4.0",
+    "umap-learn": "0.5.9.post2",
+    "numba": "0.61.2",
+    "joblib": "1.4.2",
+    "nltk": "3.10.3",
+    "plotly": "7.1.0"
+  }
+}
