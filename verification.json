@@ -1,0 +1,106 @@
+{
+  "status": "passed",
+  "sources": {
+    "API": {
+      "feature_code_cells_completed": 11,
+      "documents": 9,
+      "token_vocabulary": 813,
+      "source_separation_verified": true,
+      "binary_bow_tfidf_arrays_verified": true,
+      "saved_embedding_models_and_document_means_verified": true,
+      "word2vec_cbow_epochs": 5,
+      "fasttext_skipgram_epochs": 10,
+      "umap_scatter_outputs": 2,
+      "visible_png_umap_outputs": 2,
+      "target_warning_outputs": 0,
+      "processing_errors": 0
+    },
+    "HTTP": {
+      "feature_code_cells_completed": 11,
+      "documents": 1,
+      "token_vocabulary": 127,
+      "source_separation_verified": true,
+      "binary_bow_tfidf_arrays_verified": true,
+      "saved_embedding_models_and_document_means_verified": true,
+      "word2vec_cbow_epochs": 5,
+      "fasttext_skipgram_epochs": 10,
+      "umap_scatter_outputs": 2,
+      "visible_png_umap_outputs": 2,
+      "target_warning_outputs": 0,
+      "processing_errors": 0
+    }
+  },
+  "scope": "current course examples and separate source datasets",
+  "offline_nltk": {
+    "status": "passed",
+    "nltk_version": "3.10.3",
+    "notebook_resource_blocks_tested": 4,
+    "other_cache_paths_disabled": true,
+    "network_calls": 0,
+    "proxy_security_enforced": true,
+    "proxy_security_opt_in": false,
+    "english_stopwords": 198,
+    "indonesian_stopwords": 758,
+    "wordnet_lemma": "run",
+    "pos_tag": [
+      [
+        "books",
+        "NNS"
+      ],
+      [
+        "running",
+        "VBG"
+      ]
+    ],
+    "word_tokenize": [
+      "Books",
+      "are",
+      "running",
+      "."
+    ]
+  },
+  "standalone_notebooks": {
+    "API": {
+      "status": "passed",
+      "source": "API",
+      "notebook_without_companion_files": true,
+      "official_archives_downloaded_and_checksum_verified": [
+        "stopwords.zip",
+        "wordnet.zip",
+        "averaged_perceptron_tagger_eng.zip",
+        "punkt_tab.zip"
+      ],
+      "preprocessing_executed": true,
+      "documents": 9,
+      "feature_loader_mode": "in_memory_Chapter4",
+      "snapshot_used": false,
+      "tokenization_executed": true,
+      "cached_repeat_without_network": true,
+      "proxy_security_enforced": true,
+      "proxy_security_opt_in": false,
+      "target_warnings": 0,
+      "scope": "Resource downloads, preprocessing, feature loader and tokenization; scraping and Colab service not tested"
+    },
+    "HTTP": {
+      "status": "passed",
+      "source": "HTTP",
+      "notebook_without_companion_files": true,
+      "official_archives_downloaded_and_checksum_verified": [
+        "stopwords.zip",
+        "wordnet.zip",
+        "averaged_perceptron_tagger_eng.zip",
+        "punkt_tab.zip"
+      ],
+      "preprocessing_executed": true,
+      "documents": 1,
+      "feature_loader_mode": "in_memory_Chapter4",
+      "snapshot_used": false,
+      "tokenization_executed": true,
+      "cached_repeat_without_network": true,
+      "proxy_security_enforced": true,
+      "proxy_security_opt_in": false,
+      "target_warnings": 0,
+      "scope": "Resource downloads, preprocessing, feature loader and tokenization; scraping and Colab service not tested"
+    }
+  }
+}
