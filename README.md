@@ -1,6 +1,6 @@
 # Google Books Scraping and Text Processing
 
-An educational Python project that collects book metadata using the Google Books REST API and HTML scraping, then cleans and analyzes book descriptions in English and Indonesian. The API workflow also applies TF-IDF and cosine similarity to compare descriptions and retrieve books from text queries in Exercise 6.
+An educational Python project that collects book metadata using the Google Books REST API and HTML scraping, then cleans and analyzes book descriptions in English and Indonesian. The API workflow applies TF-IDF and cosine similarity in Exercise 6, then K-Means and Hierarchical/Ward text clustering in Exercise 7.
 
 ## Authors
 
@@ -13,7 +13,7 @@ An educational Python project that collects book metadata using the Google Books
 
 | Notebook | Source | Collection workflow |
 | --- | --- | --- |
-| `01_google_books_api.ipynb` | Google Books API v1 | Searches for a book, inspects a JSON response, and requests up to 10 matching volumes. |
+| `01_google_books_api_exercise6_7_tfidf.ipynb` | Google Books API v1 | Searches for a book, inspects a JSON response, and requests up to 10 matching volumes. |
 | `02_google_books_http.ipynb` | Google Books website | Requests one book page and extracts metadata using BeautifulSoup, with fallback selectors for the description. |
 
 Both notebooks create a pandas DataFrame and apply the same text-processing pipeline. The API notebook uses the example query `Laskar Pelangi Andrea Hirata`. The HTTP notebook uses volume ID `ZPi96HIG76AC`.
@@ -22,14 +22,14 @@ The project processes metadata and descriptions; it does not download complete b
 
 ## Repository structure
 
-The notebooks and dependencies are stored in the repository root. Both collection methods have result snapshots included in the repository.
+The notebooks and dependencies are stored in the repository root. Both collection methods have result snapshots included in the repository. The continued API notebook is `01_google_books_api_exercise6_7_tfidf.ipynb`: its original 55 cells, including Exercise 6, are preserved and 20 Exercise 7 cells are appended, giving 75 cells in total.
 
 | Repository path | Purpose |
 | --- | --- |
 | `README.md` | Project overview, API setup, and execution instructions. |
 | `requirements.txt` | Python dependencies. |
 | `.gitignore` | Excludes local environments, notebook checkpoints, NLTK downloads, and secret files. |
-| `01_google_books_api.ipynb` | API collection, text processing, Exercise 5 feature engineering, and Exercise 6 text similarity. |
+| `01_google_books_api_exercise6_7_tfidf.ipynb` | API collection, text processing, Exercise 5 feature engineering, Exercise 6 text similarity, and Exercise 7 text clustering. |
 | `02_google_books_http.ipynb` | HTML collection, text processing, and Exercise 5 feature engineering. |
 | `API_pre-processing_result/google_books_api_preprocessed.csv` | Included API dataset with preprocessing stages. |
 | `API_pre-processing_result/frekuensi_kata.csv` | Included API word-frequency table. |
@@ -37,7 +37,8 @@ The notebooks and dependencies are stored in the repository root. Both collectio
 | `Http_pre-processing_result/google_books_http_preprocessed.csv` | Included HTTP preprocessing dataset. |
 | `Http_pre-processing_result/word_freequency.csv` | Included HTTP word-frequency table; filename retained as uploaded. |
 | `Http_pre-processing_result/wordcloud.png` | Included HTTP before/after stopword-removal visualization. |
-| `text_similarity_result/API_TFIDF/` | Exercise 6 API cosine-similarity matrix, document-pair rankings, query results, statistics, and heatmap. |
+| `text_similarity_result/API_TFIDF/` | Optional earlier Exercise 6 exports. The selected notebook displays similarity results in its cells and does not regenerate these files automatically. |
+| `text_clustering_result/API_TFIDF/` | Exercise 7 API cluster labels, model evaluation, cluster summaries, fitted models, dendrogram, and word clouds. |
 
 ### Included files versus newly generated output
 
@@ -103,7 +104,7 @@ python -m pip install -r requirements.txt
 python -m jupyterlab
 ```
 
-In VS Code, select the same virtual environment as the notebook kernel. Internet access is needed for Google requests and the first NLTK resource downloads. Exercise 6 uses packages already included in `requirements.txt`; it does not require an additional embedding model or package. Once dependencies are installed, Exercise 6 can run from its bundled corpus snapshot without Google Books requests or NLTK resource downloads.
+In VS Code, select the same virtual environment as the notebook kernel. Internet access is needed for Google requests and the first NLTK resource downloads. Exercises 6 and 7 use packages already included in `requirements.txt`; neither requires an additional embedding model or package. Exercise 7 can run from its embedded corpus snapshot without Google Books requests or NLTK resource downloads. Running Exercise 6 alone requires the Exercise 5 corpus in memory or its `corpus.csv` file.
 
 ## How to get a Google Books API key
 
@@ -166,10 +167,10 @@ Do not print the key or the full request URL. Do not commit a real key in notebo
 ## Running the notebooks
 
 1. Launch Jupyter from the repository root and confirm the notebook's working directory with `Path.cwd()` if necessary.
-2. Open `01_google_books_api.ipynb`, configure the key, and run cells from top to bottom.
-3. Inspect the API response and DataFrame, then run the text-processing cell followed by Exercise 5 and Exercise 6. Use the updated API notebook containing the `Exercise 6 — Text Similarity menggunakan TF-IDF` section.
+2. Open `01_google_books_api_exercise6_7_tfidf.ipynb`, configure the key, and run cells from top to bottom.
+3. Inspect the API response and DataFrame, then run the text-processing cell followed by Exercise 5, Exercise 6, and Exercise 7. The updated API notebook contains separate text-similarity and text-clustering sections. For the Exercise 7 assignment, run the `Exercise 7 — Text Clustering menggunakan TF-IDF` section.
 4. Open `02_google_books_http.ipynb` and run its collection, text-processing, and Exercise 5 cells independently. This notebook does not use an API key.
-5. Inspect the generated CSV files and word clouds in `hasil_text_processing_api/` and `hasil_text_processing_http/`, unless you changed `output_dir` as described above. API text-similarity results are written separately to `text_similarity_result/API_TFIDF/`.
+5. Inspect the generated CSV files and word clouds in `hasil_text_processing_api/` and `hasil_text_processing_http/`, unless you changed `output_dir` as described above. Exercise 6 displays text-similarity results inside the notebook. Exercise 7 writes text-clustering results to `text_clustering_result/API_TFIDF/`.
 
 Rerunning a notebook overwrites its generated CSV files and, when usable tokens are available, its word cloud in the configured output directory. Results may differ from the included snapshot because upstream metadata and HTML can change.
 
@@ -334,61 +335,31 @@ Both feature output directories contain the following file groups:
 
 ## Exercise 6: Text similarity with TF-IDF
 
-Exercise 6 continues the **API notebook** and follows the Chapter 7 cosine-similarity examples in the course material. It compares the `prepro` descriptions used in Exercise 5, using **TF-IDF features and cosine similarity**. Titles identify the books in result tables; they are not added to the text features. The HTTP notebook remains unchanged and does not include Exercise 6.
+The existing Exercise 6 section is preserved from `01_google_books_api_exercise6_tfidf.ipynb`. It follows the Chapter 7 cosine-similarity examples and compares the same `prepro` descriptions used for feature engineering. Its eight code cells display a document list, TF-IDF dimensions, a similarity matrix, a heatmap, the top document pairs, the nearest document for each book, and two query rankings.
 
-Use the supplied API notebook containing the Exercise 6 section as `01_google_books_api.ipynb` to retain the repository's existing naming. The separately distributed version is named `01_google_books_api_exercise6_tfidf.ipynb`; if it is kept under that filename, open that file to run Exercise 6.
+### Input and execution
 
-### Input selection
+The section uses the Exercise 5 `corpus` DataFrame when it is already available. Otherwise, it reads `corpus.csv` from `RESULT`, defaulting to `feature_engineering_result/API/`. It then recomputes TF-IDF using `TfidfVectorizer()` and calculates cosine similarity. This selected version of Exercise 6 does not contain an embedded-data fallback.
 
-The section checks inputs in the following order:
+To run Exercise 6 alone:
 
-1. Load `corpus.csv`, `tfidf_features.npz`, and `tfidf_vectorizer.joblib` from Exercise 5. It checks the current `RESULT` directory when defined, followed by `feature_engineering_result/API/` under the working directory.
-2. If these files are unavailable, use the Exercise 5 `corpus` DataFrame still in memory and recompute TF-IDF with the same default `TfidfVectorizer()` settings.
-3. On a fresh kernel without those inputs, use the complete Exercise 5 corpus snapshot embedded in the notebook and recompute TF-IDF with the same settings.
+1. Install the notebook dependencies and open the continued API notebook.
+2. Provide `feature_engineering_result/API/corpus.csv` under the working directory, or first run Exercise 5 to create `corpus` in memory.
+3. Run the cells under **Exercise 6**, stopping at the next exercise heading if you only need similarity.
+4. Inspect the similarity matrix, pair rankings, nearest-document table, and query results.
 
-The supplied snapshot contains **9 nonempty descriptions and 807 TF-IDF features**. It matches Exercise 5. The earlier saved Chapter 4 output showing 6 descriptions belongs to a different API run and is not the input for these results. When using files from a new run, the number of descriptions and features can change.
-
-Before computing similarity, the section checks document IDs, nonempty text, matrix dimensions, nonzero document vectors, and agreement between the saved matrix and the vectorizer's transformation of the corpus. These checks also verify the row order.
-
-### Running Exercise 6
-
-For the full API workflow, run collection, text processing, Exercise 5, and Exercise 6 in order. To run only Exercise 6:
-
-1. Install `requirements.txt` in the selected notebook environment.
-2. Open the updated API notebook and locate **Exercise 6 — Text Similarity menggunakan TF-IDF**.
-3. Run all cells from that heading onward, including the collapsed snapshot cell.
-4. Inspect the similarity matrix, heatmap, document-pair rankings, word contributions, and query results.
-5. Run the final saving cell to export the results into `text_similarity_result/API_TFIDF/` relative to `Path.cwd()`.
-
-A Google Books API key, live scraping, NLTK data, and Word2Vec/FastText training are not needed when running this section alone from the embedded snapshot. The same workflow can be used in a fresh Google Colab session after installing the listed dependencies.
+The `Lanjutan_Exercise6_7_TFIDF.zip` package includes the feature input files required to run the existing Exercise 6 section without repeating collection. Extract the package and use its directory as the working directory. Running only Exercise 7 does not require those companion files because that section includes its own snapshot fallback.
 
 ### Similarity and query workflow
 
-- Compute `cosine_similarity` between all document TF-IDF vectors.
-- Display the labeled matrix and a heatmap on a 0–1 color scale.
-- Rank the unique document pairs using the upper triangle of the matrix, excluding the diagonal and reversed duplicates.
-- Calculate the mean, median, maximum, and number of zero-score pairs.
-- Inspect the words contributing to the highest-scoring pair. Their normalized TF-IDF products sum to that pair's cosine similarity.
-- Transform each query using the fitted document vectorizer, then rank matching descriptions. The vectorizer is not fitted again on the query.
+- Convert the preprocessed descriptions to TF-IDF vectors.
+- Compute `cosine_similarity` between all document vectors and display the labeled matrix and heatmap.
+- Rank unique pairs using the matrix's upper triangle, excluding self-comparisons and reversed duplicates.
+- Display the mean and maximum pair similarity and the number of zero-score pairs.
+- Identify the nearest other document for every book.
+- Transform each query using the fitted vectorizer and display the five highest-scoring documents.
 
-The example queries are `andrea hirata laskar pelangi` and `rainbow troop novel`. They are already written in the form expected after preprocessing; `troop` matches the stemmed vocabulary. Free-form queries should first use the same text preprocessing as the corpus. The search returns up to five documents with positive scores and reports when a query has no known vocabulary features.
-
-### Output files
-
-Extract `hasil_exercise6_text_similarity_tfidf.zip` into the repository root to add the supplied results. Keep its `text_similarity_result/API_TFIDF/` folder structure. The final notebook cell produces the same eight filenames:
-
-| File in `text_similarity_result/API_TFIDF/` | Contents |
-| --- | --- |
-| `cosine_similarity_matrix.csv` | Full square matrix labeled by document ID; one row and column per description. |
-| `pasangan_dokumen.csv` | All unique document pairs, their book titles, and cosine scores in descending order. |
-| `statistik_similarity.csv` | Pair count, mean, median, maximum, and number of zero-score pairs. |
-| `ringkasan_dokumen.csv` | Document IDs, book titles, original source rows, token counts, and nonzero feature counts. |
-| `kontribusi_pasangan_teratas.csv` | Shared vocabulary, normalized TF-IDF weights, and per-word contributions for the highest-scoring pair. |
-| `query_andrea_hirata.csv` | Ranked positive-score matches for `andrea hirata laskar pelangi`. |
-| `query_rainbow_troop.csv` | Ranked positive-score matches for `rainbow troop novel`. |
-| `heatmap_cosine_similarity.png` | Labeled heatmap of the document-similarity matrix. |
-
-CSV files use UTF-8 with BOM (`utf-8-sig`). Scores in the CSV files retain the computed precision; notebook tables show rounded values. Rerunning the saving cell overwrites these eight files in the current output directory.
+The sample queries are `andrea hirata laskar pelangi` and `rainbow troop novel`, already written in the form expected after preprocessing. The existing query code takes the top five rows even when the fifth score is zero. A zero-score row has no matching vocabulary features and should not be interpreted as a positive match.
 
 ### Included Exercise 6 results
 
@@ -403,31 +374,143 @@ CSV files use UTF-8 with BOM (`utf-8-sig`). Scores in the CSV files retain the c
 | Top result for `andrea hirata laskar pelangi` | D05, score 0.4867 |
 | Top result for `rainbow troop novel` | D01 (`The Rainbow Troops`), score 0.2314 |
 
-![API TF-IDF cosine-similarity heatmap](text_similarity_result/API_TFIDF/heatmap_cosine_similarity.png)
+The supplied results use the nine-description Exercise 5 snapshot with 807 TF-IDF features. The earlier saved Chapter 4 output showing six valid descriptions comes from a different API run. Similarity scores describe lexical overlap and do not measure the probability that books share a topic.
 
-All 10 Exercise 6 code cells were executed successfully for this snapshot. Checks confirmed that the saved-feature and standalone embedded-snapshot paths produce matching similarity matrices, and that a query containing only unknown features returns no ranked results.
+### Previously exported similarity files
 
-These are lexical similarity scores, not relevance probabilities. A zero score means no shared vocabulary feature after preprocessing, and does not establish that two books have unrelated meanings. Mixed description languages and limited vocabulary overlap affect the results. No labeled relevance dataset was used to measure retrieval accuracy.
+If the earlier `hasil_exercise6_text_similarity_tfidf.zip` package is already part of the repository, its `text_similarity_result/API_TFIDF/` directory may be retained. Those files were exported from the earlier extended similarity version. The selected 75-cell notebook keeps its original Exercise 6 output in notebook cells and does not automatically write or update these eight files:
 
-### Exercise 6 dependencies
+| File in `text_similarity_result/API_TFIDF/` | Contents |
+| --- | --- |
+| `cosine_similarity_matrix.csv` | Full square matrix labeled by document ID; one row and column per description. |
+| `pasangan_dokumen.csv` | All unique document pairs, their book titles, and cosine scores in descending order. |
+| `statistik_similarity.csv` | Pair count, mean, median, maximum, and number of zero-score pairs. |
+| `ringkasan_dokumen.csv` | Document IDs, book titles, original source rows, token counts, and nonzero feature counts. |
+| `kontribusi_pasangan_teratas.csv` | Shared vocabulary, normalized TF-IDF weights, and per-word contributions for the highest-scoring pair. |
+| `query_andrea_hirata.csv` | Ranked positive-score matches for `andrea hirata laskar pelangi`. |
+| `query_rainbow_troop.csv` | Ranked positive-score matches for `rainbow troop novel`. |
+| `heatmap_cosine_similarity.png` | Labeled heatmap of the document-similarity matrix. |
 
-Exercise 6 uses the existing `pandas`, `numpy`, `scipy`, `scikit-learn`, `matplotlib`, `joblib`, and `ipython` entries in `requirements.txt`. `pathlib` and `json` are part of Python's standard library. No new package is required for this exercise, and the existing package versions are retained.
+The earlier exports use UTF-8 with BOM. Their presence is optional for Exercise 7. The clustering exercise uses the TF-IDF feature matrix rather than these similarity-output files.
+
+## Exercise 7: Text clustering with TF-IDF
+
+**Colab assignment:** continue the feature-engineering work, apply the clustering methods from Chapter 8, analyze the results, and submit the GitHub repository link through Sidia.
+
+Exercise 7 is a separate section after Exercise 6 in the continued API notebook. It groups book descriptions using the TF-IDF vectors from Exercise 5. The earlier similarity section remains intact; clustering operates on the feature matrix directly. The appended section contains 10 code cells and 10 markdown cells.
+
+### Implemented clustering methods
+
+| Method | Configuration | Input |
+| --- | --- | --- |
+| K-Means | `KMeans(random_state=10, n_init=20)`; cluster count selected from the candidate scores. | All TF-IDF features of the preprocessed API descriptions. |
+| Hierarchical/Ward | `AgglomerativeClustering(linkage='ward', metric='euclidean')`; the same candidate range is evaluated. | The same TF-IDF matrix, converted to dense form for this small corpus. |
+
+These are the two clustering methods demonstrated in the supplied course notebook. The supervised sentiment-classification example in that chapter is not part of the clustering exercise.
+
+### Input and standalone execution
+
+The section first tries Exercise 5's `corpus.csv`, `tfidf_features.npz`, and `tfidf_vectorizer.joblib` from the current `RESULT` directory or `feature_engineering_result/API/`. It checks that the matrix agrees with the fitted vectorizer and the corpus row order.
+
+If those files are missing, the section uses an available in-memory corpus and recomputes TF-IDF with the Exercise 5 defaults. On a new kernel without companion files, it uses an embedded copy of the same nine-document corpus. The included feature matrix contains 807 features. Book titles are labels in the result tables; clustering uses the `prepro` descriptions.
+
+To run only Exercise 7 in Colab:
+
+1. Upload `01_google_books_api_exercise6_7_tfidf.ipynb` and install its dependencies. The existing installation cell or `requirements.txt` contains the required packages. A minimal install for this section is `%pip install pandas numpy scipy scikit-learn==1.6.1 matplotlib joblib wordcloud ipython`.
+2. Locate **Exercise 7 — Text Clustering menggunakan TF-IDF**.
+3. Run every cell from that heading onward, including the collapsed snapshot cell.
+4. Inspect the candidate scores, chosen cluster counts, book assignments, dendrogram, dominant words, and word clouds.
+5. Run the final saving cell and download `text_clustering_result/API_TFIDF/` before the Colab runtime is cleared.
+6. Add the updated notebook and result folder to the GitHub repository. Submit the repository link through Sidia according to the assignment instructions.
+
+Running this section from the embedded snapshot does not require an API key, live collection, NLTK downloads, Exercise 6 execution, or retraining Word2Vec/FastText. Dependencies must already be installed. The `Lanjutan_Exercise6_7_TFIDF.zip` package includes the continued API notebook, its feature input files, and clustering results. When adding it to the existing repository, keep the HTTP notebook and earlier artifacts. Add this README as the repository's `README.md`.
+
+### Cluster-count selection and evaluation
+
+The supplied snapshot evaluates K-Means inertia for k=1 through 6 and Euclidean silhouette scores for both methods at k=2 through 6. The upper bound is reduced when a smaller input corpus requires it.
+
+Each method selects the candidate with the highest mean silhouette score; an exact tie chooses the smaller k. The elbow curve is shown as an additional check. Both methods and the silhouette metric use Euclidean geometry, consistent with Ward linkage. No dimensionality reduction is used before clustering or scoring.
+
+Cluster IDs are arbitrary. For readable comparison, displayed cluster numbers begin at 1 and are ordered by the first document appearing in each cluster. Raw model labels and their mapping are also saved. Adjusted Rand Index (ARI) measures agreement between the methods without depending on their label numbers.
+
+### Included Exercise 7 results
+
+| Measure | K-Means | Hierarchical/Ward |
+| --- | --- | --- |
+| Input | 9 descriptions, 807 TF-IDF features | Same input |
+| Selected number of clusters | 4 | 4 |
+| Mean Euclidean silhouette | 0.025982 | 0.025982 |
+| Cluster sizes | 3, 3, 2, 1 | 3, 3, 2, 1 |
+| Clusters containing one document | 1 | 1 |
+
+Both methods produce the same membership on this snapshot (ARI = 1.0):
+
+| Displayed cluster | Documents | Books |
+| --- | --- | --- |
+| 1 | D01, D03, D08 | The Rainbow Troops; Rainbow Troops (Mandarin Edition); IJCAH 2022 proceedings. |
+| 2 | D02, D04, D05 | LASKAR PELANGI; Andrea Hirata, Laskar Pelangi - dalam Novel dan Film; Laskar pelangi. |
+| 3 | D06, D07 | Sastra Nasionalisme Pascakolonialitas; Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII. |
+| 4 | D09 | Master Kisi-Kisi UN SMA/MA IPS 2019. |
+
+The silhouette scores are close to zero, so these groups are weakly separated. Agreement between methods does not establish clustering accuracy. For example, conference proceedings appear in the same group as two Rainbow Troops descriptions. Nine short or uneven, multilingual descriptions provide limited evidence for stable topic groups. The analysis is exploratory and does not report classification accuracy or claim that four clusters are universally optimal.
+
+### Clustering visualizations
+
+![Exercise 7 elbow and silhouette evaluation](text_clustering_result/API_TFIDF/elbow_dan_silhouette.png)
+
+![Exercise 7 Ward dendrogram](text_clustering_result/API_TFIDF/dendrogram_ward.png)
+
+![Exercise 7 K-Means cluster word clouds](text_clustering_result/API_TFIDF/wordcloud_kmeans.png)
+
+![Exercise 7 Ward cluster word clouds](text_clustering_result/API_TFIDF/wordcloud_ward.png)
+
+Dominant-word tables use mean TF-IDF weights per cluster. Word clouds use token frequencies within each cluster, following the course example. The dendrogram includes a marked cut corresponding to the selected Ward cluster count.
+
+### Exercise 7 output files
+
+Extract `hasil_exercise7_text_clustering_tfidf.zip` into the repository root, preserving `text_clustering_result/API_TFIDF/`. This directory contains 17 files:
+
+| File | Contents |
+| --- | --- |
+| `hasil_clustering.csv` | Corpus metadata and preprocessed descriptions, raw labels, displayed cluster IDs, and per-document silhouette values for both methods. |
+| `evaluasi_jumlah_cluster.csv` | Euclidean silhouette, cluster sizes, and singleton counts for both methods at each candidate k. |
+| `elbow_kmeans.csv` | K-Means inertia at each tested k. |
+| `perbandingan_model.csv` | Selected k and evaluation summary for each method. |
+| `ringkasan_cluster.csv` | Members, titles, document counts, and dominant words for every cluster. |
+| `kata_teratas_cluster.csv` | Ranked dominant words and mean TF-IDF weights for every cluster. |
+| `silhouette_per_dokumen.csv` | Long-form per-document silhouette table for both methods. |
+| `ward_linkage.npy` | SciPy Ward linkage matrix used for the dendrogram. |
+| `kmeans_model.joblib`, `ward_model.joblib` | Fitted clustering models. The saved Ward model describes the fitted corpus and has no `predict` method for new documents. |
+| `elbow_dan_silhouette.png` | Cluster-count evaluation plots. |
+| `dendrogram_ward.png` | Ward merge hierarchy and selected cut. |
+| `wordcloud_kmeans.png`, `wordcloud_ward.png` | Word clouds for all selected clusters. |
+| `parameters.json` | Feature source, candidate range, selected settings, displayed-label mappings, and agreement between methods. |
+| `execution_status.json` | Execution status, input mode, document count, timestamp, and actual package versions. |
+| `artifact_manifest.csv` | Artifact names, sizes, and SHA-256 checksums. |
+
+CSV files use UTF-8 with BOM. Rerunning the saving cell overwrites the generated files. Keep the input `corpus.csv` and fitted TF-IDF vectorizer from the same feature-engineering run as the saved models.
+
+### Exercise 7 validation and dependencies
+
+The selected notebook's eight Exercise 6 code cells and the ten appended Exercise 7 code cells were executed in sequence. Checks confirmed that both sections use the same 9-by-807 TF-IDF matrix, the 55 original cells and outputs remain identical, reloaded models agree with exported labels, and silhouette scores agree with the assignments. The same Exercise 7 implementation was also checked with its standalone snapshot and with SciPy/scikit-learn Ward partitions.
+
+No new package is needed: `scikit-learn` provides both clustering methods and the metrics, `scipy` provides Ward linkage and the dendrogram, `matplotlib` and `wordcloud` provide plots, and the existing `pandas`, `numpy`, `joblib`, and `ipython` entries support data handling, saved models, and notebook output. Existing requirements and version pins are retained. The execution-status file records the versions actually used for the supplied run.
 
 ## Running an individual notebook in Google Colab
 
 Either notebook can be uploaded to Colab on its own. You do not need to upload the complete project folder when running collection, preprocessing, and feature engineering in sequence.
 
-1. Upload `01_google_books_api.ipynb` or `02_google_books_http.ipynb` to Colab.
+1. Upload `01_google_books_api_exercise6_7_tfidf.ipynb` or `02_google_books_http.ipynb` to Colab.
 2. Run the `%pip install` cell under the library heading. This cell contains the required packages, so a separate `requirements.txt` upload is unnecessary.
 3. Restart the session if required after installation, then run the notebook cells from the beginning.
 4. For the API notebook, configure your Google Books API key before running requests. The HTTP notebook does not require an API key.
 5. Run collection and preprocessing before Exercise 5. The feature section uses the resulting `df_processed` DataFrame directly.
-6. In the updated API notebook, continue with Exercise 6 after Exercise 5. Inspect its similarity matrix, rankings, query tables, and heatmap.
-7. Inspect the tables and UMAP plots, then download generated files from the runtime if you need to keep them. Exercise 6 exports its eight result files to `text_similarity_result/API_TFIDF/`.
+6. In the updated API notebook, continue with Exercise 6 and Exercise 7 after Exercise 5. Exercise 6 produces similarity results; Exercise 7 produces clustering results. Exercise 7 can run independently from its embedded corpus snapshot. Exercise 6 alone requires the Exercise 5 corpus in memory or `corpus.csv`.
+7. Inspect the tables and UMAP plots, then download generated files from the runtime if you need to keep them. Exercise 6 displays results inside the notebook; Exercise 7 exports 17 clustering artifacts to `text_clustering_result/API_TFIDF/`.
 
 Internet access is required for package installation, Google Books requests, and the first download of missing NLTK resources. Generated files are stored relative to the runtime's working directory; retain a copy before the temporary runtime is cleared.
 
-To run Exercise 5 alone from the included snapshots, provide the corresponding preprocessing CSV or extract the full package into the runtime and use its directory as the working directory. A notebook's previously saved outputs do not restore Python variables in a fresh session. To run Exercise 6 alone, run all cells from its heading; the embedded snapshot provides a fallback when the Exercise 5 files and in-memory corpus are absent.
+To run Exercise 5 alone from the included snapshots, provide the corresponding preprocessing CSV or extract the full package into the runtime and use its directory as the working directory. A notebook's previously saved outputs do not restore Python variables in a fresh session. To run Exercise 6 alone, provide `feature_engineering_result/API/corpus.csv` or run Exercise 5 first. To run Exercise 7 alone, run all cells from its heading, including its embedded snapshot cell.
 
 ## NLTK resource setup
 
@@ -474,9 +557,12 @@ The HTTP snapshot contains only one description. Its TF-IDF inverse-document-fre
 | Package import fails after installation | Restart the kernel/session and rerun the imports using the environment where the install cell ran. |
 | UMAP is not interactive in the notebook viewer | Use the embedded PNG for a static view or open the corresponding HTML file in a browser. |
 | Output changes after rerunning | Check which source data and input mode were used; new collection results can differ from the included snapshot. |
-| Exercise 6 result folder is missing | Run the final saving cell and check `Path.cwd()`. Results are written to `text_similarity_result/API_TFIDF/`. |
-| Exercise 6 matrix and corpus do not match | Use `corpus.csv`, `tfidf_features.npz`, and `tfidf_vectorizer.joblib` from the same Exercise 5 run. |
-| Exercise 6 query returns no results | Check that the preprocessed query contains vocabulary features learned from the corpus. Unknown features and zero-score matches are excluded. |
+| Exercise 6 cannot find `corpus.csv` | Run Exercise 5 first or extract its corpus CSV under `feature_engineering_result/API/` in the working directory. |
+| Exercise 6 result directory is not created | The preserved Exercise 6 section displays its outputs in notebook cells. The earlier similarity ZIP is optional and is not regenerated by this version. |
+| Exercise 6 query includes a zero-score result | The existing query code always takes the top five rows. Inspect each score; zero indicates no vocabulary overlap with the query. |
+| Exercise 7 result folder is missing | Run its final saving cell and inspect `Path.cwd() / "text_clustering_result" / "API_TFIDF"`. |
+| Exercise 7 silhouette is close to zero | Inspect the memberships and feature vocabulary; do not infer strong topic groups from the number of clusters alone. |
+| Word-cloud text shows missing Chinese glyphs | Use a CJK-capable font through the word-cloud `font_path`. The notebook checks common local font paths; the clustering matrix still retains all vocabulary features. |
 
 ## References
 
@@ -485,5 +571,8 @@ The HTTP snapshot contains only one description. Its TF-IDF inverse-document-fre
 - [Google Cloud API key management](https://cloud.google.com/docs/authentication/api-keys)
 - [scikit-learn TfidfVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html)
 - [scikit-learn cosine_similarity](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.cosine_similarity.html)
+- [scikit-learn KMeans](https://scikit-learn.org/1.6/modules/generated/sklearn.cluster.KMeans.html)
+- [scikit-learn AgglomerativeClustering](https://scikit-learn.org/1.6/modules/generated/sklearn.cluster.AgglomerativeClustering.html)
+- [scikit-learn silhouette_score](https://scikit-learn.org/1.6/modules/generated/sklearn.metrics.silhouette_score.html)
 
 Book descriptions and metadata come from Google Books and their respective providers. This repository is an educational project; no redistribution license for third-party content is implied.

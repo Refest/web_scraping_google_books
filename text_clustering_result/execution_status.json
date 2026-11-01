@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "exercise": 7,
+  "input_mode": "File fitur TF-IDF Exercise 5",
+  "documents": 9,
+  "timestamp_utc": "2026-11-01T16:03:44.680827+00:00",
+  "live_scraping_rerun": false,
+  "package_versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.6.1",
+    "matplotlib": "3.10.7",
+    "joblib": "1.6.0",
+    "wordcloud": "1.9.6"
+  }
+}
