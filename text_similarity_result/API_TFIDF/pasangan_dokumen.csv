@@ -1,0 +1,37 @@
+﻿doc_1,judul_1,doc_2,judul_2,cosine_similarity
+D02,LASKAR PELANGI,D05,Laskar pelangi,0.15690055417706167
+D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",D05,Laskar pelangi,0.13478647290650422
+D02,LASKAR PELANGI,D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",0.09994489700205719
+D02,LASKAR PELANGI,D06,Sastra Nasionalisme Pascakolonialitas,0.0968491967568363
+D01,The Rainbow Troops,D05,Laskar pelangi,0.09201112149597694
+D01,The Rainbow Troops,D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.07566172332189121
+D06,Sastra Nasionalisme Pascakolonialitas,D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,0.07059168673077532
+D01,The Rainbow Troops,D03,Rainbow Troops (Mandarin Edition),0.06781099783189641
+D01,The Rainbow Troops,D02,LASKAR PELANGI,0.055306371580515004
+D01,The Rainbow Troops,D06,Sastra Nasionalisme Pascakolonialitas,0.029752428852141515
+D01,The Rainbow Troops,D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",0.02755110466239219
+D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,0.026891689468560836
+D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",D06,Sastra Nasionalisme Pascakolonialitas,0.018228360410877865
+D02,LASKAR PELANGI,D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.016334953433089515
+D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.015661374130221797
+D06,Sastra Nasionalisme Pascakolonialitas,D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.013097231433663481
+D02,LASKAR PELANGI,D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,0.012713171116561913
+D02,LASKAR PELANGI,D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.01041073937985872
+D02,LASKAR PELANGI,D03,Rainbow Troops (Mandarin Edition),0.009405511218327871
+D06,Sastra Nasionalisme Pascakolonialitas,D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.008128029029034046
+D01,The Rainbow Troops,D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,0.0051565507480865495
+D01,The Rainbow Troops,D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.0027446690241218546
+D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.002336635296482613
+D03,Rainbow Troops (Mandarin Edition),D06,Sastra Nasionalisme Pascakolonialitas,0.002153847044146054
+D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.0017559827258134162
+D03,Rainbow Troops (Mandarin Edition),D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",0.0
+D03,Rainbow Troops (Mandarin Edition),D05,Laskar pelangi,0.0
+D03,Rainbow Troops (Mandarin Edition),D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,0.0
+D03,Rainbow Troops (Mandarin Edition),D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.0
+D03,Rainbow Troops (Mandarin Edition),D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.0
+D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.0
+D04,"Andrea Hirata, Laskar Pelangi - dalam Novel dan Film",D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.0
+D05,Laskar pelangi,D06,Sastra Nasionalisme Pascakolonialitas,0.0
+D05,Laskar pelangi,D07,Explore Bahasa Indonesia Jilid 1 untuk SMP/MTs Kelas VII,0.0
+D05,Laskar pelangi,D08,Proceedings of the International Joint Conference on Arts and Humanities 2022 (IJCAH 2022),0.0
+D05,Laskar pelangi,D09,Master Kisi-Kisi UN SMA/MA IPS 2019,0.0

@@ -1,19 +1,31 @@
+# Google Books scraping, preprocessing, feature engineering, and text similarity.
+# Exercise 6 reuses existing dependencies; package versions are unchanged.
+
+# Google Books API and HTML collection
 requests==2.32.3
+beautifulsoup4
+
+# Text preprocessing and word-cloud analysis
+nltk==3.10.3
+Sastrawi
+demoji
+wordcloud
+
+# Shared data processing and features; also used by Exercise 6 (TF-IDF + cosine)
 pandas==2.2.3
 numpy==2.2.6
 scipy==1.15.3
 scikit-learn==1.6.1
 matplotlib==3.10.3
+joblib==1.4.2
+
+# Exercise 5: word embeddings and UMAP visualizations
 gensim==4.4.0
 umap-learn==0.5.9.post2
 numba==0.61.2
-joblib==1.4.2
-nltk==3.10.3
 plotly==7.1.0
-beautifulsoup4
-Sastrawi
-demoji
-wordcloud
+
+# Notebook execution and display, including Exercise 6 tables and plots
 ipython
 ipykernel
 jupyterlab
